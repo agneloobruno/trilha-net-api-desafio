@@ -4,10 +4,12 @@ using TrilhaApiDesafio.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddDbContext<OrganizadorContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoPadrao")));
+var connectionString = builder.Configuration.GetConnectionString("ConexaoPadrao");
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 28)); // Ajuste a versão do seu MySQL se necessário
 
+builder.Services.AddDbContext<OrganizadorContext>(options =>
+    options.UseMySql(connectionString, serverVersion));
+    
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
